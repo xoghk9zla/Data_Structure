@@ -1,0 +1,56 @@
+#include <stdio.h>
+#include <conio.h>
+#include <Windows.h>
+
+#define _CRT_SECURE_NO_WARNINGS
+#define OBJ 'C'
+#define BREADTH 20
+#define LEFT   75
+#define RIGHT  77
+
+int main()
+{
+	int i, j = 0;
+	char move;
+
+	while (j <= BREADTH){
+
+		move = getch();
+
+		switch (move)
+		{
+		case RIGHT:
+			system("cls");	//1. 화면을 지운다
+			for (int i = 0; i < j; ++i)	//2, 공백의 갯수를 j개 만큼 출력한다.
+				printf(",");
+
+			if (j % 2 == 0)
+				printf("%c", OBJ);
+			else
+				printf("%c", OBJ + 32);
+
+			for (int i = 0; i < BREADTH - j; ++i)
+				printf(",");
+			++j;	//3. 공백의 갯수를 하나 늘린다.
+			//Sleep(1000);	//4. 너무 빠르니 잠깐 쉰다. 이동속도를 조절한다.
+			break;
+		case LEFT:
+			--j;
+			system("cls");	//1. 화면을 지운다
+			for (int i = 0; i < j; ++i)	//2, 공백의 갯수를 j개 만큼 출력한다.
+				printf(",");
+
+			if (j % 2 == 0)
+				printf("%c", OBJ);
+			else
+				printf("%c", OBJ+32);
+				for (int i = 0; i < BREADTH - j; ++i)
+					printf(",");
+			break;
+		default:
+			break;
+		}
+
+	}
+
+}

@@ -1,0 +1,60 @@
+#include <iostream>
+
+using namespace std;
+
+struct Node{
+	int data;
+	struct Node* Next;
+};
+Node* Head = NULL;
+
+void Insert(Node);
+void PrintAll();
+void Array2List(int[]);
+
+int main(){
+	int arr[10] = { 5, 2, 3, 24, 22, 52, 5, 235, 236, 532 };
+	
+	Array2List(arr);
+	PrintAll();
+	return 0;
+}
+
+void Insert(Node n){ 
+	//Node* NewNode = (Node*)malloc(sizeof(Node));
+	Node* NewNode = new Node[sizeof(Node)];			//노드 동적할당
+
+	NewNode->data = n.data;							//값 대입
+	NewNode->Next = NULL;							//새로운 노드의 Next에 NULL값넣기
+
+	if (Head == NULL){							//헤드의 Next가 NULL이다. 그럼 Head->Next는 NewNode
+		Head = NewNode;
+	}
+	else{											//맨뒤에
+		Node* cur = Head;							//임시변수, 시작점
+
+		while(cur -> Next != NULL){
+				cur = cur->Next;
+		}
+			cur->Next = NewNode;
+		
+	}
+}
+
+void PrintAll()
+{
+	Node* cur = Head;
+
+	while (cur != NULL){
+		printf("%d \n", cur->data);
+		cur = cur->Next;
+	}
+}
+void Array2List(int arr[]){
+	Node temp;
+
+	for (int i = 0; i< 10; i++){
+		temp.data = arr[i];
+		Insert(temp);
+	}
+}

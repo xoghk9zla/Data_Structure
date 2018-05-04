@@ -1,0 +1,188 @@
+#include <iostream>
+#include <Windows.h>
+
+using namespace std;
+
+class Champion{
+	char* name;
+	char* position;
+	int Hp, Mp, Speed, Range;
+public:
+	Champion(){};
+	Champion(char* n, char* p, int hp, int mp, int speed, int range) : Hp(hp), Mp(mp), Speed(speed), Range(range){
+		name = new char[strlen(n) + 1];
+		strcpy_s(name, strlen(n) + 1, n);
+		position = new char[strlen(p) + 1];
+		strcpy_s(position, strlen(p) + 1, p);
+	}
+	char* GetN(){ return name; }
+	char* GetP(){ return position; }
+	int GetHp(){ return Hp; }
+	void show(){ cout << "이름:" << name << ", 포지션: " << position << ", 체력: " << Hp << ", 마나: " << Mp << ", 이동속도: " << Speed << ", 사거리: " << Range << endl; }
+	void Insert(){
+		char n[20], p[10];
+		cin >> n >> p >> this->Hp >> this->Mp >> this->Speed >> this->Range;
+		name = new char[strlen(n) + 1];
+		strcpy_s(name, strlen(n) + 1, n);
+		position = new char[strlen(p) + 1];
+		strcpy_s(position, strlen(p) + 1, p);
+	}
+	~Champion(){ delete[] name; delete[] position; };
+};
+int i = 0, j, num = 20;
+Champion empty, delHP,delC,delP;
+Champion lol[25] = { { "티모", "탑", 515, 267, 330, 500 }, { "케이틀린", "원딜", 524, 313, 325, 650 }, { "룰루", "서폿", 552, 292, 325, 550 }, { "나르", "탑", 540, 100, 325, 150 }, { "말자하", "미드", 514, 325, 340, 550 },
+{ "볼리베어", "탑", 584, 270, 345, 125 }, { "브랜드", "미드", 507, 325, 340, 550 }, { "사이온", "탑", 542, 275, 340, 150 }, { "소나", "서폿", 482, 340, 325, 500 }, { "스카너", "정글", 602, 272, 345, 125 },
+{ "아무무", "정글", 613, 287, 335, 125 }, { "애니", "미드", 511, 344, 335, 625 }, { "애쉬", "원딜", 527, 231, 325, 600 }, { "이즈리얼", "원딜", 484, 310, 325, 550 }, { "직스", "미드", 524, 334, 325, 550 },
+{ "징크스", "원딜", 517, 245, 325, 525 }, { "칼리스타", "원딜", 517, 231, 325, 550 }, { "타릭", "서폿", 619, 349, 340, 125 }, { "트리스타나", "원딜", 542, 246, 325, 550 }, { "트린다미어", "탑", 625, 100, 345, 125 } };
+
+void Search(char*);
+void DeleteC(char*);
+void DeleteP(char*);
+void deleted(int);
+void PrintAll();
+void FindMaxHp(Champion&);
+void SortbyHp();
+
+int main(){
+	int op;
+	char name[20], position[5];
+	const Champion temp;
+	Champion MaxHp;
+
+	while (1){
+
+		cout << "1. 검색 2. 추가 3. 제거 4. 포지션제거 5. 출력 6. HP높은캐릭터 7. HP순으로 정렬" << endl;
+		cout << "무엇을 하시겠습니까?";
+		cin >> op;
+		system("cls");
+		switch (op)
+		{
+		case 1:
+			i = 0;
+			cout << "검색하실 챔피언의 이름을 입력하세요.";
+			cin >> name;
+			Search(name);
+			break;
+		case 2:
+			lol[num].Insert();
+			++num;
+			break;
+		case 3:
+			i = 0;
+			cout << "제거하실 챔피언의 이름을 입력하세요.";
+			cin >> name;
+			DeleteC(name);
+			break;
+		case 4:
+			i = 0;
+			cout << "제거하실 포지션을 입력하세요.";
+			cin >> position;
+			DeleteP(position);
+			break;
+		case 5:
+			i = 0;
+			PrintAll();
+			break;
+		case 6:
+			i = 0,MaxHp = temp;
+			FindMaxHp(MaxHp);
+			break;
+		case 7:
+			i = 0, j= num-1;
+			SortbyHp();
+			empty = delHP;
+			break;
+		default:
+			break;
+		}
+	}
+
+}
+
+void Search(char* n)
+{
+	if (i < num){
+		if (strcmp(lol[i].GetN(), n) != 0){
+			++i;
+			Search(n);
+		}
+		else{
+			lol[i].show();
+			return;
+		}
+	}
+
+}
+void DeleteC(char* n)
+{
+	if (i < num){
+		if (strcmp(lol[i].GetN(), n) == 0){
+			if (i<num)
+			lol[i] = lol[num-1];
+				lol[num - 1] = delC;
+			--num,i=0;
+			DeleteC(n);
+		}
+		else{
+			++i;
+			DeleteC(n);
+		}
+	}
+}
+void DeleteP(char* p)
+{
+	if (i < num){
+		if (strcmp(lol[i].GetP(), p) == 0){
+				lol[i] = lol[num - 1];
+				lol[num - 1] = delP;
+			--num, i = 0;
+			DeleteP(p);
+		}
+	
+		else{
+			++i;
+			DeleteP(p);
+		}
+	}
+}
+void PrintAll()
+{
+	if (i < num){
+		lol[i].show();
+		++i;
+		PrintAll();
+	}
+	else if (num == 0)
+		cout << "챔피언이 없습니다." << endl;
+}
+void FindMaxHp(Champion& c)
+{
+	if (i < num){
+		if (c.GetHp() < lol[i].GetHp())
+			c = lol[i];
+			++i;
+			FindMaxHp(c);
+	}
+	else{
+		if (num != 0)
+			c.show();
+		else
+			cout << "챔피언이 없습니다." << endl;
+	}
+}
+
+void SortbyHp(){
+	if (i < j){
+		if (lol[i].GetHp() < lol[i + 1].GetHp()){
+			empty = lol[i];
+			lol[i] = lol[i + 1];
+			lol[i + 1] = empty;
+		}
+		if (i !=j -1)
+			++i;
+		else if (i == j-1)
+			--j, i=0;
+		SortbyHp();
+		}
+}

@@ -1,0 +1,28 @@
+void insert(const Champion & a)
+{
+   Champion * NewCham;
+   NewCham = new Champion;
+
+   NewCham->Hp = a.Hp;
+   NewCham->Mp = a.Mp;
+   NewCham->Speed = a.Speed;
+   NewCham->Range = a.Range;
+   NewCham->name = a.name;
+   NewCham->position = a.position;
+   NewCham->next_hp_Champion = Head;
+
+   if (Head == NULL)
+   {   
+      Head = NewCham;
+      NewCham->next_hp_Champion = Head;                  ///자꾸 에러 터져서 수정
+   }
+   else
+   {
+      Champion * cur = Head;
+      while (cur->next_hp_Champion != Head)
+         cur = cur->next_hp_Champion;
+
+
+      cur->next_hp_Champion = NewCham;
+   }
+}

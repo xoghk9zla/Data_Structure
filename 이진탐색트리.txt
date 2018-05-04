@@ -1,0 +1,95 @@
+#include <iostream>
+
+using namespace std;
+
+struct Node{
+	int hp;
+	Node* Left, *Right;
+};
+void Insert(int);
+void PrintAll(Node*);
+void Search(int, Node*);
+Node* root;
+int main(){
+	int hp, op;
+
+	while (1){
+		cout << "1. 삽입 2. 출력 3. 검색" << endl;
+		cin >> op;
+		switch (op)
+		{
+		case 1:
+			cout << "체력 입력" << endl;
+			cin >> hp;
+			Insert(hp);
+			break;
+		case 2:
+			PrintAll(root);
+			break;
+		case 3:
+			cout << "체력 입력" << endl;
+			cin >> hp;
+			Search(hp, root);
+			break;
+		default:
+			break;
+		}
+	}
+}
+void Insert(int hp){
+	Node* New, * cur = root;
+	New = new Node[sizeof(Node)];
+	New->hp = hp;
+	New->Left = NULL;
+	New->Right = NULL;
+
+	if (root == NULL){
+		root = New;
+	}
+	else{
+		while (cur != NULL){
+			if (cur->hp < New->hp){
+				if (cur->Right == NULL){
+					cur->Right = New;
+					break;
+				}
+				cur = cur->Right;
+			}
+			else if (cur->hp > New->hp){
+				if (cur->Left == NULL){
+					cur->Left = New;
+					break;
+				}
+				cur = cur->Left;
+			}
+			else
+				delete New;
+		}
+	}
+}
+void PrintAll(Node* cur){
+	if (cur == NULL)
+		return;
+	else{
+		PrintAll(cur->Left);
+		cout << cur->hp << endl;
+		PrintAll(cur->Right);
+	}
+}
+void Search(int hp,  Node* cur){
+	if (cur == NULL)
+		cout << "없음" << endl;
+	else{
+		if (cur->hp == hp){
+			cout << "찾는거 = " <<  cur->hp << endl;
+		}
+		else  if (cur->hp < hp){
+			cur = cur->Right;
+			Search(hp, cur);
+		}
+		else if (cur->hp > hp){
+			cur = cur->Left;
+			Search(hp, cur);
+		}
+	}
+}
